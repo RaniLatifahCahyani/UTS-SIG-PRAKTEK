@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>GeoJSON tutorial - Leaflet</title>
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+
+	<script src="indonesia.geojson" type="text/javascript"></script>
+
+    <script src="padang.js" type="text/javascript"></script>
+
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 600px;
+			width: 100%;
+			max-width: 100%;
+			max-height: 100%;
+		}
+	</style>
+
+	
+</head>
+<body>
+
+<div id='map'></div>
+
+<script src="indonesia.geojson" type="text/javascript"></script>
+
+<script>
+	const map = L.map('map').setView([-0.823311292188628, 100.33341898889475], 17);
+
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+    L.marker([-0.7912883509368114, 100.31509668958826]).addTo(map);
+
+    var JalanKerumah = [
+            [-0.7917289497750405, 100.31520502807038],
+            [-0.8006758817888354, 100.31626909029809],
+            [-0.8093326244516135, 100.31564032625444],
+            [-0.812717937796757, 100.32134756911216],
+            [-0.8161941266799804, 100.32589864512016],
+        ];
+
+        L.polyline(JalanKerumah).addTo(map);
+
+    var locations = [[-0.7917289497750405, 100.31520502807038],
+            [-0.8006758817888354, 100.31626909029809],
+            [-0.8093326244516135, 100.31564032625444],
+            [-0.812717937796757, 100.32134756911216],
+            [-0.8161941266799804, 100.32589864512016],  ];
+
+    for (var i = 0; i < locations.length; i++) {
+        marker = new L.marker([locations[i][0], locations[i][1]]).addTo(map);
+    }
+
+    var info_pnp = '<p style="text-align: center;"> <img src="https://lh5.googleusercontent.com/p/AF1QipNcTiV4CdNQbCKchJ7a_xPl_o5PwT5bYBX1KFmO=w408-h725-k-no" width="250px" height="100px"></p><p style="text-align: justify;">Rumah Rani beralamat di flyover dan line ini menunjukkan jalan dari rumah Rani ke SMA 7 Padang. Tujun dibuat ini karena Rani sering melewati jalan ini</p>';
+    L.marker([-0.7917289497750405, 100.31520502807038]).bindTooltip("Rumah Rani").bindPopup(info_pnp).addTo(map);
+    
+    var info_pnp = '<p style="text-align: center;"> <img src="https://lh5.googleusercontent.com/p/AF1QipOud7Zjl-m78m3OpiUJ5Yqizt742p7AASSTfP7e=w408-h306-k-no" width="250px" height="100px"></p><p style="text-align: justify;">Ini berakir disini poliline ya yang bertujuan memberi info dari rumah Rani ke SMA & Padang</p>';
+    L.marker([-0.8161941266799804, 100.32589864512016]).bindTooltip("SMA 7 Padang").bindPopup(info_pnp).addTo(map);
+
+    var circle = L.circle ([-0.7917289497750405, 100.31520502807038],{
+        color: 'red',
+        fillColor: 'f03',
+        fillOpacity: 0.5,
+        radius: 50
+    }).addTo(map).bindPopup('I am dogy');
+
+    const bicycleRentalLayer = L.geoJSON([padang], {
+
+    style(feature) {
+        return feature.properties && feature.properties.style;
+    },
+
+    onEachFeature,
+
+    pointToLayer(feature, latlng) {
+        return L.circleMarker(latlng, {
+            radius: 8,
+            fillColor: '#ff7800',
+            color: '#000',
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        });
+    }
+    }).addTo(map);
+
+   
+
+
+</script>
+</body>
+</html>
